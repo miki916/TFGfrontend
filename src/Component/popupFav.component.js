@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import axios from "axios";
+import Alert from './alerts';
+export default function PopupFav({ setOnClickGen, setOnClickWeb }) {
 
-export default function NewFav({ setOnClickWeb }) {
-
+    //url de la api que controla las webs
     const baseURLWeb = "http://localhost:8080/api/website/"
+    //url de la api que controla las categorias personales
     const baseURLPersonal = "http://localhost:8080/api/personal/"
 
+    //datos necesarios para la asignación de favoritos
     const [homePage, setHomePage] = useState("")
     const [web, setWebFav] = useState("")
+    //guarda el resultado de la llamada a las apis
     const [result, setResult] = useState("")
     const [webs, setWeb] = useState([])
 
+    //funcion que gestion la llamada de recogida de favoritos
     const getWebsite = async () => {
 
         const loginString = sessionStorage.getItem('login')
@@ -24,6 +29,7 @@ export default function NewFav({ setOnClickWeb }) {
 
     }
 
+    //funcion que gestiona la información del formulario
     const submit = async () => {
 
         const loginString = sessionStorage.getItem('login')
@@ -34,13 +40,18 @@ export default function NewFav({ setOnClickWeb }) {
         await axios.post(baseURLPersonal + "save", json)
             .then(res => {
                 setResult(res.data)
-                console.log(res)
             })
+
+        if (result === "SUCCESS")
+            <Alert msg="Página añadida correctamente"></Alert>
+        else
+            <Alert msg="Error al añadir la página"></Alert>
 
     }
 
+    // sive para cerrar el popup
     const onClick = () => {
-
+        setOnClickGen(true)
         setOnClickWeb(false)
 
     }
@@ -52,11 +63,14 @@ export default function NewFav({ setOnClickWeb }) {
     }, [])
 
     return (
-        <div className="modal-css">
-            <div className="overlay-css"></div>
+        <div className="d-flex justify-content-center" >
 
-            <div className="modal-content-css">
-                <h3 className='font-weight-bold mt-2'>AÑADIR FAVORITO</h3>
+            <div className="d-flex flex-column bg-light col-xl-3 col-md-5 col-7 col-lg-4 shadow p-3 mb-5  rounded " style={{ marginTop: "150px" }}>
+                <div className='row p-1'>
+                    <h3 className='font-weight-bold mt-2 col-11'>AÑADIR FAVORITO</h3>
+                    <button type="button"  onClick={onClick} class="btn btn-sm text-danger btn-light  col-1 btn-default btn-circle">X</button>
+                    
+                </div>
 
                 <div className="form-outline mb-4">
                     <input type="text" id="loginName" className="form-control" onChange={e => setHomePage(e.target.value)} placeholder='Pagina de inicio' />
@@ -68,9 +82,7 @@ export default function NewFav({ setOnClickWeb }) {
                 </select>
                 <button type="submit" onClick={submit} className="btn btn-primary btn-block  mt-4">Guardar</button>
 
-                <button className="close-modal-css btn  btn-circle" onClick={onClick}>
-                    X
-                </button>
+
             </div>
         </div>
     )

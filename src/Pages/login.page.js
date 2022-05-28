@@ -1,27 +1,26 @@
 import axios from "axios";
-import React, { useEffect, useState } from 'react'
+import React, { Navigate, useState } from 'react'
 
 
-export default function Login({ setLogin }) {
+export default function  Login({ setLogin }) {
 
     const baseURL = "http://localhost:8080/api/user/"
 
     const [username, setUsername] = useState("");
     const [passwd, setPasswd] = useState("");
-    const [result, setResult] = useState("");
+  
 
     const submit = async () => {
 
         var json = { "username": username, "passwd": passwd }
 
         const response = await axios.post(`${baseURL}login`, json)
-
-        await setResult(response.data)
-
-        if (result != null)
-            await setLogin(result)
-
-        else
+      
+        if (response.data != null){
+            setLogin(response.data)
+            window.location.href = "http://localhost:3000/";
+            
+        }else
             alert("No has podido iniciar sesion")
 
     }
@@ -52,7 +51,7 @@ export default function Login({ setLogin }) {
                         <input type="password" id="loginPassword" onChange={e => setPasswd(e.target.value)} className="form-control" placeholder='Contraseña' />
                     </div>
 
-                    <button type="submit" onClick={submit} href="/" className="btn btn-primary btn-block mb-4">Iniciar sesion</button>
+                    <button type="submit" onClick={submit}   className="btn btn-primary btn-block mb-4">Iniciar sesion</button>
 
                 </div>
             </div>

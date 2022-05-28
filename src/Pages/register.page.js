@@ -13,7 +13,7 @@ export default function Register() {
     const [news, setNews] = useState(false)
 
     const [result, setResult] = useState("")
-   
+
     const submit = async () => {
 
         if (passwd === passwd2) {
@@ -34,26 +34,25 @@ export default function Register() {
 
         } else
             setResult("PASSWD_ERR")
+
+
+        if (result === "SUCCESS") {
+
+            alert("Registro satisfactorio");
+
+        } else if (result === "NOT_SUCCESS") {
+
+            alert("Este nombre de usuario ya existe")
+
+        }
+        else if (result === "PASSWD_ERR") {
+
+            alert("La contraseñas no son las mismas")
+
+        }
     }
 
 
-    if (result === "SUCCESS"){
-
-        setResult("")
-        alert("Ya has sido registrado");
-        
-    }else if (result === "NOT_SUCCESS"){
-
-        setResult("")
-        alert("Este nombre de usuario ya existe")
-       
-    }
-    else if (result === "PASSWD_ERR"){
-
-        setResult("")
-        alert("La contraseñas no son las mismas")
-    
-    } 
 
     return (
         <div className='d-flex justify-content-center text-center'>
@@ -96,7 +95,7 @@ export default function Register() {
                     </div>
 
                     <button type="submit" onClick={submit} className="btn btn-primary btn-block mb-3">Registrarse</button>
-                    
+
                 </div>
             </div>
         </div>

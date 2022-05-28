@@ -1,26 +1,22 @@
-import NewWebsite from './Component/popupWeb.component';
+import PopupWeb from './Component/popupWeb.component';
 import React, { useState } from 'react'
-import {
-  Routes,
-  Route,
-  useLocation
-} from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
-import NewFav from './Component/popupFav.component';
-
+import PopupFav from './Component/popupFav.component';
 import Login from './Pages/login.page';
 import Register from './Pages/register.page';
 import Main from './Pages/main.page';
 import Recomendados from './Pages/recomendados.page';
 
 
-
+// guarda en una session el usuario logueado
 function setLogin(login) {
 
   sessionStorage.setItem('login', JSON.stringify(login))
 
 }
 
+// devuelve si el usuario esta logueado o no
 function getLogin() {
 
   const loginString = sessionStorage.getItem('login')
@@ -32,12 +28,26 @@ function getLogin() {
 
 function App() {
 
+  // variables que indican si se tiene que abrir un popup o no
   const [onClickWeb, setOnClickWeb] = useState(false);
   const [onClickFav, setOnClickFav] = useState(false);
+  const [onClickGen, setOnClickGen] = useState(true);
 
+  // devuelve si esta logueado o no
   const login = getLogin()
   const location = useLocation();
 
+  // devuelve el popup que debe ser abierto
+  const showPopup = () => {
+
+    if (onClickFav && !onClickGen)
+      return (<PopupFav setOnClickGen={setOnClickGen} setOnClickWeb={setOnClickFav} />)
+    else if (onClickWeb && !onClickGen)
+      return (<PopupWeb setOnClickGen={setOnClickGen} setOnClickWeb={setOnClickWeb} />)
+
+  }
+
+  //en caso de que no este logueado solo se podrá entrar en el Login y en el Register
   if (!login && location.pathname !== "/register")
     return <Login setLogin={setLogin} />
 
@@ -45,23 +55,18 @@ function App() {
     return <Register />
 
 
-
   return (
     <>
-      {Nav(setOnClickWeb, setOnClickFav)}
-      {onClickWeb &&
+      {Nav(setOnClickGen, setOnClickWeb, setOnClickFav)}
 
-        <NewWebsite setOnClickWeb={setOnClickWeb} />
-      }
+      {showPopup()}
 
-      {onClickFav &&
-
-        <NewFav setOnClickWeb={setOnClickFav} />
-      }
       <Routes>
 
-        <Route path="/" element={<Main />} />
-        <Route path="/recomendados" element={<Recomendados />} />
+        {onClickGen &&
+          <Route path="/" element={<Main />} />}
+        {onClickGen &&
+          <Route path="/recomendados" element={<Recomendados />} />}
 
       </Routes>
 
@@ -71,14 +76,16 @@ function App() {
   );
 }
 
-
-function Nav(setOnClickWeb, setOnClickFav) {
+// Componente navegador
+function Nav(setOnClickGen, setOnClickWeb, setOnClickFav) {
 
   const onClickWeb = () => {
+    setOnClickGen(false)
     setOnClickWeb(true)
   }
 
   const onClickFav = () => {
+    setOnClickGen(false)
     setOnClickFav(true)
   }
 
@@ -87,7 +94,7 @@ function Nav(setOnClickWeb, setOnClickFav) {
   }
 
   return (
-    <nav className="navbar navbar-expand navbar-light border-bottom" /*style={{ backgroundColor: "#C70B14" }}*/ >
+    <nav className="navbar navbar-expand navbar-light border-bottom " >
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
 

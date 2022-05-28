@@ -39,7 +39,7 @@ export default function NavIframe({ setIFrame }) {
     const onChange = (e) => {
 
         if (e !== "default")
-            setIFrame("https://" + e)
+            setIFrame(e)
 
     }
 
@@ -48,7 +48,7 @@ export default function NavIframe({ setIFrame }) {
         if (favorites.length > 0)
             return (<li className="nav-item dropdown">
 
-                <select className="form-control-sm" aria-label="Default select example" onChange={e => onChange(e.target.value)} >
+                <select className="form-control" aria-label="Default select example" onChange={e => onChange(e.target.value)} >
                     <option defaultValue={'DEFAULT'} value="default">Favoritos</option>
                     {favorites.map(element => <option key={element.id} value={element.homePage} className="dropdown-item">{element.website.title}</option>)}
                 </select>
@@ -57,7 +57,7 @@ export default function NavIframe({ setIFrame }) {
     }
 
     return (
-        <nav className="navbar navbar-expand navbar-dark bg-white">
+        <nav className="navbar navbar-expand navbar-dark bg-white" >
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav mr-auto">
 
@@ -68,7 +68,7 @@ export default function NavIframe({ setIFrame }) {
                 <ul className="navbar-nav my-2 my-lg-0">
 
                     <li className="nav-item dropdown">
-                        <select className="form-control-sm" aria-label="Default select example" onChange={e => onChange(e.target.value)} >
+                        <select className="form-control" aria-label="Default select example" onChange={e => onChange(e.target.value)} >
                             <option defaultValue={'DEFAULT'} value="default">Páginas webs</option>
                             {webs.map(element => <option key={element.id} value={element.domain} className="dropdown-item">{element.title}</option>)}
                         </select>
