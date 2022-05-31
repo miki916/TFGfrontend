@@ -12,7 +12,20 @@ export default function NavIframe({ setIFrame }) {
 
     const getWebsite = async () => {
 
-        await axios.get(baseURLWeb + "get/all")
+        const loginString = sessionStorage.getItem('login')
+        const user = JSON.parse(loginString)
+
+        const diffTime = (new Date().getTime() - new Date(user.birthday).getTime()) /1000 ;
+        const diffYears = Math.ceil(diffTime / (60 * 60 * 24)/365.25); 
+
+        var json = true;
+
+        if(diffYears < 18){
+            json = false;
+        }
+       
+
+        await axios.get(baseURLWeb + "get/all?mayor=" + json)
             .then(res => { setWeb(res.data) })
 
     }
