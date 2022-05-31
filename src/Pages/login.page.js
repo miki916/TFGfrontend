@@ -1,28 +1,34 @@
 import axios from "axios";
 import React, { Navigate, useState } from 'react'
+import showAlert from "../Component/alerts";
 
 
-export default function  Login({ setLogin }) {
+export default function Login({ setLogin }) {
 
     const baseURL = "http://localhost:8080/api/user/"
 
     const [username, setUsername] = useState("");
     const [passwd, setPasswd] = useState("");
-  
+
 
     const submit = async () => {
 
         var json = { "username": username, "passwd": passwd }
-
-        const response = await axios.post(`${baseURL}login`, json)
-      
-        if (response.data != null){
-            setLogin(response.data)
-            window.location.href = "http://localhost:3000/";
+        
+        await axios.post(`${baseURL}login`, json)
+        .then(res =>{
             
-        }else
-            alert("No has podido iniciar sesion")
+            if (res.data != "") {
 
+                setLogin(res.data)
+                showAlert("Enhorabuena, has iniciado sesión")
+                window.location.href = "http://localhost:3000/";
+    
+            } else
+                showAlert("No has podido inciar sesión")
+    
+        })
+   
     }
 
 
@@ -51,7 +57,7 @@ export default function  Login({ setLogin }) {
                         <input type="password" id="loginPassword" onChange={e => setPasswd(e.target.value)} className="form-control" placeholder='Contraseña' />
                     </div>
 
-                    <button type="submit" onClick={submit}   className="btn btn-primary btn-block mb-4">Iniciar sesion</button>
+                    <button  onClick={submit} className="btn btn-primary btn-block mb-4">Iniciar sesion</button>
 
                 </div>
             </div>

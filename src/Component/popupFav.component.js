@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from "axios";
-import Alert from './alerts';
+import showAlert from './alerts';
+
 export default function PopupFav({ setOnClickGen, setOnClickWeb }) {
 
     //url de la api que controla las webs
@@ -12,7 +13,6 @@ export default function PopupFav({ setOnClickGen, setOnClickWeb }) {
     const [homePage, setHomePage] = useState("")
     const [web, setWebFav] = useState("")
     //guarda el resultado de la llamada a las apis
-    const [result, setResult] = useState("")
     const [webs, setWeb] = useState([])
 
     //funcion que gestion la llamada de recogida de favoritos
@@ -36,18 +36,26 @@ export default function PopupFav({ setOnClickGen, setOnClickWeb }) {
         const user = JSON.parse(loginString)
 
         var json = { "type": "1", "user": { "id": user.id }, "homePage": homePage, "website": { "id": parseInt(web) } };
+        try{
 
-        await axios.post(baseURLPersonal + "save", json)
+            await axios.post(baseURLPersonal + "save", json)
             .then(res => {
-                setResult(res.data)
+                if (res.data === "SUCCESS")
+                    showAlert("Página añadida a favoritos")
+                else
+                    showAlert("Error al añadir la página favoritos")
             })
+        }catch(err){
 
-        if (result === "SUCCESS")
-            <Alert msg="Página añadida correctamente"></Alert>
-        else
-            <Alert msg="Error al añadir la página"></Alert>
+            showAlert("El dominio está mal escrito")
+
+        }
+       
+
 
     }
+
+
 
     // sive para cerrar el popup
     const onClick = () => {
@@ -68,8 +76,8 @@ export default function PopupFav({ setOnClickGen, setOnClickWeb }) {
             <div className="d-flex flex-column bg-light col-xl-3 col-md-5 col-7 col-lg-4 shadow p-3 mb-5  rounded " style={{ marginTop: "150px" }}>
                 <div className='row p-1'>
                     <h3 className='font-weight-bold mt-2 col-11'>AÑADIR FAVORITO</h3>
-                    <button type="button"  onClick={onClick} class="btn btn-sm text-danger btn-light  col-1 btn-default btn-circle">X</button>
-                    
+                    <button type="button" onClick={onClick} className="btn btn-sm text-danger btn-light  col-1 btn-default btn-circle">X</button>
+
                 </div>
 
                 <div className="form-outline mb-4">

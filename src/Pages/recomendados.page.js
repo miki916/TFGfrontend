@@ -19,6 +19,7 @@ export default function Recomendados() {
 
         await axios.post(baseURLWeb + "get/recomendations", json)
             .then(res => {
+                console.log(res.data);
                 setRecomendaciones(res.data)
             })
 
@@ -31,14 +32,14 @@ export default function Recomendados() {
     }, [])
 
     return (
-        <>  
-             {onClickPage &&
+        <>
+            {onClickPage &&
 
-                <PopupPage domain={url} setOnClick={setOnClickPage}/>
+                <PopupPage domain={url} setOnClick={setOnClickPage} />
             }
 
             {!onClickPage &&
-            <div className='row d-flex justify-content-center '>{recomendaciones.map(res => <Recomendation setUrl={setURL} setOnClick={setOnClickPage} web={res} />)}</div>}
+                <div className='row d-flex justify-content-center '>{recomendaciones.map(res => <Recomendation key={res.id} setUrl={setURL} setOnClick={setOnClickPage} web={res} />)}</div>}
         </>
 
     )

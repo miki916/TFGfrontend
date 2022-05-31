@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from "axios";
 import Alert from "./alerts"
 import "./popup.css";
+import showAlert from './alerts';
 
 export default function PopupWeb({ setOnClickGen, setOnClickWeb }) {
 
@@ -17,7 +18,6 @@ export default function PopupWeb({ setOnClickGen, setOnClickWeb }) {
     const [webAge, setAge] = useState(false);
 
     //guarda el resultado de la llamada a las apis
-    const [result, setResult] = useState("")
     const [webCat, setCategoryWeb] = useState()
     const [categories, setCategory] = useState([]);
 
@@ -25,18 +25,25 @@ export default function PopupWeb({ setOnClickGen, setOnClickWeb }) {
     const submit = async () => {
 
         var json = { "title": webName, "domain": webDomain, "description": webDescription, "maxAge": webAge, "category": { "id": webCat } };
-        await axios.post(baseURLWeb + "save/", json)
+        
+        try{
+            await axios.post(baseURLWeb + "save", json)
             .then(res => {
 
-                setResult(res.data)
-                console.log(res.data);
+                if (res.data === "SUCCESS")
+                    showAlert("Página añadida")
+                else
+                    showAlert("Error al añadir la página")
 
             })
+        }catch(err){
 
-        if (result === "SUCCESS")
-            <Alert msg="Página añadida correctamente"></Alert>
-        else
-            <Alert msg="Error al añadir la página"></Alert>
+            showAlert("El dominio está mal escrito")
+
+        }
+       
+
+
     }
 
     //funcion que gestion la llamada de recogida de categorias 
@@ -70,7 +77,7 @@ export default function PopupWeb({ setOnClickGen, setOnClickWeb }) {
                 <div className="d-flex flex-column bg-light col-xl-3 col-md-4 col-7 col-lg-4 shadow p-3 mb-5 rounded " style={{ marginTop: "150px" }}>
                     <div className='row p-1'>
                         <h3 className='font-weight-bold  mt-2 col-11'>NUEVA WEB</h3>
-                        <button type="button" onClick={onClick} class="btn btn-sm  text-danger btn-light col-1 btn-default btn-circle">X</button>
+                        <button type="button" onClick={onClick} className="btn btn-sm  text-danger btn-light col-1 btn-default btn-circle">X</button>
 
                     </div>
 
