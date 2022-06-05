@@ -50,10 +50,10 @@ return (
 
             <ul className="nav nav-pills nav-justified mb-3 mt-4" id="ex1" role="tablist">
                 <li className="nav-item" role="presentation">
-                    <a className="nav-link " href="/login" >Login</a>
+                    <a className="nav-link " href="/login" >Iniciar Sesión</a>
                 </li>
                 <li className="nav-item" role="presentation">
-                    <a className="nav-link active" href="/register" >Register</a>
+                    <a className="nav-link active" href="/register" >Registrarse</a>
                 </li>
             </ul>
             <div className="tab-content">

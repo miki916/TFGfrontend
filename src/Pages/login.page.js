@@ -39,11 +39,11 @@ export default function Login({ setLogin }) {
                 <ul className="nav nav-pills nav-justified mb-3 mt-4" id="ex1" role="tablist">
                     <li className="nav-item" role="presentation">
                         <a className="nav-link active" id="tab-login" data-mdb-toggle="pill" href="/login" role="tab"
-                            aria-controls="pills-login" aria-selected="true">Login</a>
+                            aria-controls="pills-login" aria-selected="true">Iniciar Sesión</a>
                     </li>
                     <li className="nav-item" role="presentation">
                         <a className="nav-link" id="tab-register" data-mdb-toggle="pill" href="/register" role="tab"
-                            aria-controls="pills-register" aria-selected="false">Register</a>
+                            aria-controls="pills-register" aria-selected="false">Registrarse</a>
                     </li>
                 </ul>
 
